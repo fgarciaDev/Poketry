@@ -1,13 +1,10 @@
-const String supportBotId = 'bot.support.id';
-const String mockUserId = 'mock.user.id';
-
-class ResearchModel {
+class PoketryModel {
   final String id;
   final String createdAt;
   final String userId;
   final String message;
 
-  ResearchModel(
+  PoketryModel(
       {required this.id,
       required this.createdAt,
       required this.userId,
@@ -15,9 +12,9 @@ class ResearchModel {
 
   @override
   String toString() =>
-      'ResearchModel(id: $id, createdAt: $createdAt, userId: $userId, message: $message)';
+      'PoketryModel(id: $id, createdAt: $createdAt, userId: $userId, message: $message)';
 
-  factory ResearchModel.fromJson(Map<String, dynamic> json) => ResearchModel(
+  factory PoketryModel.fromJson(Map<String, dynamic> json) => PoketryModel(
         id: json['id'] as String,
         createdAt: json['created_at'] as String,
         userId: json['user_id'] as String,

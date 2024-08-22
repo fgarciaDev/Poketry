@@ -1,17 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:gemini_flutter/gemini_flutter.dart';
 import 'package:poketry/data/providers/app_nav_provider.dart';
 import 'package:poketry/data/providers/pokemon_provider.dart';
-import 'package:poketry/data/providers/research_provider.dart';
+import 'package:poketry/data/providers/poketry_provider.dart';
 import 'package:poketry/views/navigation/poke_scaffold.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  try {
+    /// .env.developer
+    /// file must exist in project root and contain Gemini API key
+    await dotenv.load(fileName: '.env.developer');
+    final geminiApiKey = dotenv.env['GEMINI_API_KEY'];
+    if (geminiApiKey != null && geminiApiKey.isNotEmpty) {
+      GeminiHandler().initialize(
+        apiKey: geminiApiKey,
+        temprature: 0.7,
+        topK: 50,
+        topP: 0.8,
+        outputLength: 100,
+      );
+    } else {
+      throw Exception('Key not found in .env.developer asset file!');
+    }
+  } catch (e) {
+    debugPrint('ERROR reading GEMINI_API_KEY: $e');
+  }
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppNavProvider()),
         ChangeNotifierProvider(create: (_) => PokemonProvider()),
-        ChangeNotifierProvider(create: (_) => ResearchProvider()),
+        ChangeNotifierProvider(create: (_) => PoketryProvider()),
       ],
       child: const Poketry(),
     ),
